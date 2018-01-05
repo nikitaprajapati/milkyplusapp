@@ -1,0 +1,58 @@
+ <div class="page" data-page='place_order'>
+                 <div class="navbar">
+                    <div class="navbar-inner">
+                        <div class="left">
+                            <a href="index.html" class="link icon-only back">
+                                <i class="icon icon-back"></i>
+                            </a>
+                        </div>
+                        <div class="title">Place New Order</div>
+                        
+                    </div>
+                </div>
+
+               <div class="toolbar toolbar-bottom">
+                  <div class="toolbar-inner">
+                    <a href="dashboard.html" class="link tab-link-active">
+                      <i class="fa fa-dashboard fa-lg"></i>
+                      <span class="tabbar-label">DASHBOARD</span>
+                    </a>
+                    <a href="order_mgt.html" class="link">
+                      <i class="fa fa-file-text-o fa-lg"></i>
+                      <span class="tabbar-label">ORDERS</span>
+                    </a>
+                    <a onclick="logout_fun()" class="link">
+                      <i class="fa fa-sign-out fa-lg"></i>
+                      <span class="tabbar-label">LOGOUT</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="page-content">
+
+<br/>
+                <!-- START CODE -->
+                <div class="card">
+                <div class="card-content">
+                <div class="card-header bg-light-card font-600 color-white">
+                    <span class="order_date_add"></span>
+                </div>
+                <div class="card-content-inner">
+                <form class="orderForm">
+                <input type="hidden" name="customer_code" class="customer_code">
+
+                <div class="list-block order-block">
+                  <ul class="product_list">
+
+                  </ul>
+                </div>
+                </form>
+                </div>
+                </div>
+                </div>
+
+                <!-- END CODE -->
+
+
+                </div>
+            </div><!-- /.page-index-->
