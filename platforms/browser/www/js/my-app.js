@@ -36,7 +36,7 @@ $( document ).ready(function() {
 function onBackKeyDown() {
        var page=myApp.getCurrentView().activePage; myApp.hidePreloader(); 
        alert(page.name);
-      if(page.name=="index"){
+      if(page.name=="login-screen"){
            myApp.confirm('Do you want to Exit !', function () {
                   navigator.app.clearHistory(); navigator.app.exitApp();
             });
@@ -108,7 +108,7 @@ $$(document).on('pageInit', function (e){
     if(si_username==null){
         //alert('login');
         //window.localStorage.removeItem("login_session"); 
-        if(page.name!="index"){
+        if(page.name!="login-screen"){
          window.location.href="index.html";
        }
         //mainView.loadPage("index.html");
