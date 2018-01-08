@@ -28,6 +28,25 @@ var mainView = myApp.addView('.view-main', {
     domCache: true // write by Nikita
 });
 
+$( document ).ready(function() {  
+       document.addEventListener("backbutton", onBackKeyDown, false);
+     
+ });
+ 
+function onBackKeyDown() {
+       var page=myApp.getCurrentView().activePage; myApp.hidePreloader(); 
+       alert(page.name);
+      if(page.name=="index"){
+           myApp.confirm('Do you want to Exit !', function () {
+                  navigator.app.clearHistory(); navigator.app.exitApp();
+            });
+       } 
+       else
+       { 
+          $$(".back").click();
+       }
+}
+
 // Callbacks to run specific code for specific pages, for example for About page:
 myApp.onPageInit('about', function (page) {
     // run createContentPage func after link was clicked
@@ -79,7 +98,7 @@ function createContentPage() {
 /*---------- code by Nikita --------*/
 $$(document).on('pageInit', function (e){
     // do something here when page loaded
-    //alert('page loaging.....'); 
+    alert('page loaging.....');
     var page = e.detail.page;
     
     var si_username = window.localStorage.getItem("login_session");
@@ -89,7 +108,7 @@ $$(document).on('pageInit', function (e){
     if(si_username==null){
         //alert('login');
         //window.localStorage.removeItem("login_session"); 
-        if(page.name!="login-screen"){
+        if(page.name!="index"){
          window.location.href="index.html";
        }
         //mainView.loadPage("index.html");
@@ -165,7 +184,7 @@ myApp.onPageInit('profile', function (page) {
 function logout_fun()
 {
     window.localStorage.removeItem("login_session"); 
-    mainView.loadPage("login.html");
+    mainView.loadPage("index.html");
 }
 //================= LOGIN PAGE ==============
 function checklogin(){
