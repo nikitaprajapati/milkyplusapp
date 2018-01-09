@@ -147,6 +147,7 @@ $$(document).on('pageInit', function (e){
 });
 
 myApp.onPageInit('dashboard', function (page) {
+    checkConnection();
   var si_username = window.localStorage.getItem("login_session");
     var base_url='http://starprojects.in/dairy/app/';
     var output='';
@@ -209,11 +210,13 @@ myApp.onPageInit('profile', function (page) {
 //================= LOGOUT =================
 function logout_fun()
 {
+    checkConnection();
     window.localStorage.removeItem("login_session"); 
     mainView.loadPage("index.html");
 }
 //================= LOGIN PAGE ==============
 function checklogin(){
+    checkConnection();
     var form = $(".loginForm").serialize();
     var base_url='http://starprojects.in/dairy/app/';
     //alert(form);
@@ -248,6 +251,7 @@ function checklogin(){
 
 //================= Change Password ==============
 function change_password(){
+    checkConnection();
     var form = $(".changepassForm").serialize();
     var base_url='http://starprojects.in/dairy/app/';
     var si_username = window.localStorage.getItem("login_session");
@@ -300,6 +304,7 @@ function change_password(){
 
 //============== PLACE ORDER ========
 myApp.onPageInit('place_order', function (page) {
+    checkConnection();
     var si_username = window.localStorage.getItem("login_session");
     var base_url='http://starprojects.in/dairy/app/';
     var output='';
@@ -333,7 +338,7 @@ myApp.onPageInit('place_order', function (page) {
                                 +'<div class="item-inner">'
                                 +'<div class="item-title font-13">'+no+'. '+myres[i]['name']+'</div>'
                                 +'<div class="input">'
-                                +'<input type="text" style="border:1px solid gray;width:75px;" name="product['+myres[i]['code']+']" class="p_qty" onkeyup="calculateSum()" min="1" autocomplete="off">'
+                                +'<input type="number" style="border:1px solid gray;width:75px;" name="product['+myres[i]['code']+']" class="p_qty" onkeyup="calculateSum()" min="1" autocomplete="off">'
                                 +'</div>'
                                 +'</div>'
                                 +'</li>';
@@ -371,6 +376,7 @@ myApp.onPageInit('place_order', function (page) {
 //=========== Edit order ================
 //============== PLACE ORDER ========
 myApp.onPageInit('edit_order', function (page) {
+    checkConnection();
     var si_username = window.localStorage.getItem("login_session");
     var base_url='http://starprojects.in/dairy/app/';
     var order_code=page.query.order_code;
@@ -447,6 +453,7 @@ myApp.onPageInit('edit_order', function (page) {
 //==========================================
 //============== VIEW ORDER ========
 myApp.onPageInit('view_order', function (page) {
+    checkConnection();
     var si_username = window.localStorage.getItem("login_session");
     var base_url='http://starprojects.in/dairy/app/';
     var order_code=page.query.order_code;
@@ -504,6 +511,7 @@ myApp.onPageInit('view_order', function (page) {
                               +'<td class="numeric-cell font-600">'+ttl_Crt+'</td></tr>';
                     output+='</tbody></table></div>';
                     
+                     $(".ttlcnt_edit").html(ttl+" | "+ttl_Crt+" ");
                   //  alert(output);
                   $('.view_order_info').append(output);
                 
@@ -525,9 +533,11 @@ function calculateSum() {
     //.toFixed() method will roundoff the final sum to 2 decimal places
     $(".total_order").html(sum.toFixed(2));
     $(".total_crates").html(Math.round(crates.toFixed(2)));
+    $(".ttlcnt").html(sum.toFixed(2)+" | "+Math.round(crates.toFixed(2))+" ");
 }
 
 function add_order(){
+    checkConnection();
     var form = $(".orderForm").serialize();
     var base_url='http://starprojects.in/dairy/app/';
     //alert(form);
@@ -554,6 +564,7 @@ function add_order(){
 }
 
 function edit_order(){
+    checkConnection();
     var form = $(".orderEditForm").serialize();
     var base_url='http://starprojects.in/dairy/app/';
     //alert(form);
@@ -581,6 +592,7 @@ function edit_order(){
 
 //============== ORDER MGT ========
 myApp.onPageInit('order_mgt', function (page) {
+    checkConnection();
     var si_username = window.localStorage.getItem("login_session");
     var base_url='http://starprojects.in/dairy/app/';
     var output='';
