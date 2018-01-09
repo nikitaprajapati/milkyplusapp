@@ -29,13 +29,14 @@ var mainView = myApp.addView('.view-main', {
 });
 
 $( document ).ready(function() {  
-       document.addEventListener("backbutton", onBackKeyDown, false);
+    document.addEventListener("deviceready", checkStorage, false); 
+    document.addEventListener("backbutton", onBackKeyDown, false);
      
  });
  
 function onBackKeyDown() {
        var page=myApp.getCurrentView().activePage; myApp.hidePreloader(); 
-       alert(page.name);
+       //alert(page.name);
       if(page.name=="login-screen"){
            myApp.confirm('Do you want to Exit !', function () {
                   navigator.app.clearHistory(); navigator.app.exitApp();
@@ -45,6 +46,30 @@ function onBackKeyDown() {
        { 
           $$(".back").click();
        }
+}
+
+//-------- CHECK INTERNET CONNECTION ------------
+function checkConnection() {
+    var networkState = navigator.connection.type;
+    //alert(networkState);
+    if(networkState=='none')
+    {  
+        mainView.loadPage("internet.html");
+    }
+
+}
+
+function checkStorage()
+{ 
+   checkConnection();
+   //alert("in sabzi func");
+   var value = window.localStorage.getItem("login_session");
+   if(value==null) 
+   {
+     mainView.loadPage("index.html");
+   }else{
+     mainView.loadPage("dashboard.html");
+   }
 }
 
 // Callbacks to run specific code for specific pages, for example for About page:
@@ -98,14 +123,15 @@ function createContentPage() {
 /*---------- code by Nikita --------*/
 $$(document).on('pageInit', function (e){
     // do something here when page loaded
-    alert('page loaging.....');
-    var page = e.detail.page;
+    //alert('page loaging.....');
+    checkConnection();
+    //var page = e.detail.page;
     
-    var si_username = window.localStorage.getItem("login_session");
+    //var si_username = window.localStorage.getItem("login_session");
    // alert(page.name+"si_username:"+si_username);
     //var si_username = window.localStorage.getItem("login_session");
     
-    if(si_username==null){
+    /*if(si_username==null){
         //alert('login');
         //window.localStorage.removeItem("login_session"); 
         if(page.name!="login-screen"){
@@ -115,7 +141,7 @@ $$(document).on('pageInit', function (e){
       }else{
         // alert('dashboard');
         mainView.loadPage("dashboard.html");
-      }
+      }*/
 
     
 });

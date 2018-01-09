@@ -43,10 +43,11 @@
         <icon density="xhdpi" src="www/res/icon/android/icon.png" />
         <icon density="xxhdpi" src="www/res/icon/android/icon.png" />
         <icon density="xxxhdpi" src="www/res/icon/android/icon.png" />
-        <preference name="SplashScreen" value="screen" />
-        <preference name="SplashScreenDelay" value="10000" />
-        <splash src="splash.png" />
-
+        <preference name="SplashScreen" value="screen" /><!-- added by Nikita -->
+        <preference name="SplashScreenDelay" value="7000" /><!-- added by Nikita -->
+        <preference name="ShowSplashScreenSpinner" value="false" /><!-- added by Nikita -->
+        <splash src="splash.png" /><!-- added by Nikita -->
+        <preference name="ShowSplashScreenSpinner" value="false" /><!-- added by Nikita -->
         <!--splash density="land-ldpi" src="www/res/screen/android/drawable-land-ldpi-screen.png" />
         <splash density="land-mdpi" src="www/res/screen/android/drawable-land-mdpi-screen.png" />
         <splash density="land-hdpi" src="www/res/screen/android/drawable-land-hdpi-screen.png" />
