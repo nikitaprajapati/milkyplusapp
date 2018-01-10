@@ -153,17 +153,19 @@ myApp.onPageInit('dashboard', function (page) {
     var output='';
    
   //alert("incccccccc");
-    
+    myApp.showPreloader();
     $$.ajax({
              url  : base_url+'dashboard/'+si_username,
              dataType:'json',
              success: function(myres) {
              // alert("in"+myres);
                // console.log(myres);
+                $('.username_dash').html(myres.name);
                 $('.ttl_order').html(myres.ttl_order);
                 $('.ttl_today_order').html(myres.ttl_today_order);
               } 
             });
+    myApp.hidePreloader();
 });
 
 myApp.onPageInit('profile', function (page) {
@@ -468,7 +470,7 @@ myApp.onPageInit('view_order', function (page) {
     //$('.customer_code').val(si_username);
     $('.order_code_view').html(order_code);
     $('.edit_order_link').html('<a href="edit_order.html?order_code='+order_code+'" class="link icon-only"><i class="fa fa-pencil-square-o"></i></a>');
-    
+    myApp.showPreloader();
     $$.ajax({
              //type: 'POST',
              url  : base_url+'view_order/'+order_code,
@@ -520,6 +522,7 @@ myApp.onPageInit('view_order', function (page) {
                 
               }
             });
+        myApp.hidePreloader();
 });
 
 //==========================
@@ -602,7 +605,9 @@ myApp.onPageInit('order_mgt', function (page) {
     var output='';
     //var tomorrow = new Date.today().addDays(1).toString("dd-mm-yyyy"); 
    // alert(tomorrow);
+    myApp.showPreloader();
     $('.customer_code').val(si_username);
+    $('.order_list').html('');
     $$.ajax({
              //type: 'POST',
              url  : base_url+'order_mgt/'+si_username,
@@ -611,7 +616,11 @@ myApp.onPageInit('order_mgt', function (page) {
              //data:{'customer_code':si_username},
              success: function(myres) {
                 //alert(myres);
+
                 $('.total_order_counts').html("TOTAL ORDERS : "+myres.length);
+                if(myres.length==0){
+                    $('.order_list').html("<h4 class='font-600 text-center color-red'><p>No data available!</p></h4>");
+                }else{
                 for(var i = 0; i < myres.length; i++){
                     /*output  +='<li class="accordion-item"><a href="#" class="item-content item-link">'
                             +'<div class="item-inner">'
@@ -635,11 +644,11 @@ myApp.onPageInit('order_mgt', function (page) {
                             +'<div class="accordion-item-content">'
                             +'<div class="content-block">'
                             +'<p>Total Crates: '+myres[i]['cnt']+'</p>'
-                            +'<p class="buttons-row">'
+                            +'<!--p class="buttons-row">'
                             +'<a href="edit_order.html?order_code='+myres[i]['order_code']+'" class="button button-raised button-fill color-blue"> Edit</a>'
                             +'<a href="#" class="button button-raised button-fill color-green"> View</a>'
                             +'<a href="#" class="button button-raised button-fill color-teal"> History</a>'
-                            +'</p>'
+                            +'</p-->'
                             +'</div>'
                             +'</div>'
                             +'</li>';
@@ -650,8 +659,149 @@ myApp.onPageInit('order_mgt', function (page) {
                               +'</a></tr>';*/
                 }
                     
-                $('.order_list').append(output);
+                $('.order_list').html(output);
+                $('.note_alt').show();
+                }
 
               }
             });
+myApp.hidePreloader();
+});
+
+myApp.onPageInit('order_history', function (page) {
+    checkConnection();
+  var si_username = window.localStorage.getItem("login_session");
+    var base_url='http://starprojects.in/dairy/app/';
+    
+   
+  //alert("incccccccc");
+    myApp.showPreloader();
+    $$.ajax({
+             url  : base_url+'year_month_list/',
+             dataType:'json',
+             success: function(myres) {
+              //alert("in"+myres);
+               
+                $('.yearlist').html(myres.yearlist);
+                $('.monthlist').html(myres.monthlist);
+                
+              } 
+            });
+    myApp.hidePreloader();
+});
+
+
+function search_order_history(){
+    checkConnection();
+    var form = $(".ohistoryForm").serialize();
+     var si_username = window.localStorage.getItem("login_session");
+    var base_url='http://starprojects.in/dairy/app/';
+   // console.log(form);
+    var output='';
+    $('.order_history_list').html('');
+    $('.oh_div').show();
+    myApp.showPreloader();
+          $$.ajax({
+             type: 'POST',
+             dataType:'json',
+             url  : base_url+'order_history/'+si_username,
+             data: form,
+             cache: false,
+             success: function(res) {
+                var myres=res.order;
+                $('.oh_header').html("<strong> Search By : </strong> "+res.searchby+"<strong>Total Orders : </strong> "+myres.length+"");
+                //alert($('.monthlist: selected').val()); 
+                if(myres.length==0){
+                    $('.order_history_list').html("<h4 class='font-600 text-center color-red'><p>No data available!</p></h4>");
+                }else{
+                for(var i = 0; i < myres.length; i++){
+                    output  +='<li class=""><a href="view_order_history.html?order_code='+myres[i]['order_code']+'" class="item-content item-link">'
+                            +'<div class="item-inner">'
+                            +'<div class="item-title">ORDER CODE #<strong>'+myres[i]['order_code']+'</strong></div>'
+                            +'<div class="item-after font-13">'+myres[i]['order_date1']+'</div></div></a>'
+                            +'<div class="accordion-item-content">'
+                            +'<div class="content-block">'
+                            +'<p>Total Crates: '+myres[i]['cnt']+'</p>'
+                            +'<!--p class="buttons-row">'
+                            +'<a href="edit_order.html?order_code='+myres[i]['order_code']+'" class="button button-raised button-fill color-blue"> Edit</a>'
+                            +'<a href="#" class="button button-raised button-fill color-green"> View</a>'
+                            +'<a href="#" class="button button-raised button-fill color-teal"> History</a>'
+                            +'</p-->'
+                            +'</div>'
+                            +'</div>'
+                            +'</li>';  
+                }
+                $('.order_history_list').html(output);
+                }
+              }
+            });
+     myApp.hidePreloader();
+}
+
+myApp.onPageInit('view_order_history', function (page) {
+    checkConnection();
+    var si_username = window.localStorage.getItem("login_session");
+    var base_url='http://starprojects.in/dairy/app/';
+    var order_code=page.query.order_code;
+    var output='';
+    //alert(order_code);
+    //var tomorrow = new Date.today().addDays(1).toString("dd-mm-yyyy"); 
+   // alert(tomorrow);
+
+    //$('.customer_code').val(si_username);
+    $('.order_code_view').html(order_code);
+    $('.edit_order_link').html('<a href="edit_order.html?order_code='+order_code+'" class="link icon-only"><i class="fa fa-pencil-square-o"></i></a>');
+    myApp.showPreloader();
+    $$.ajax({
+             //type: 'POST',
+             url  : base_url+'view_order/'+order_code,
+             dataType:'json',
+             success: function(myres) {
+                   
+                   
+
+                  output+='<div class="data-table data-table-init card">'
+                            +'<div class="card-header bg-light-card font-600 color-white"><div class="data-table-title font-15">ORDER DATE: '+myres[0]['order_date1']+'<br/>CREATE ON: '+myres[0]['order_place_date1']+'</div></div>'
+                            +'<table>'
+                              +'<thead>'
+                                +'<tr>'
+                                  +'<th class="checkbox-cell font-600">No.</th>'
+                                  +'<th class="label-cell font-600">PRODUCT NAME</th>'
+                                 +' <th class="numeric-cell font-600">QTY</th>'
+                               +' </tr>'
+                              +'</thead>'
+                              +'<tbody>';
+                var ttl=0; var ttl_Crt=0;
+                for(var i = 0; i < myres.length; i++){
+                //alert(qty);
+                var no=i+1;
+                    if(myres[i]['qty']!=null && myres[i]['qty']!=""){
+                    var qty=myres[i]['qty'];
+                    
+                    }else{
+                     var qty="";
+
+                    }
+                    ttl+=parseFloat(qty);
+                    ttl_Crt+=Math.round(parseFloat(qty));
+
+                    output+='<tr><td class="checkbox-cell">'+no+'.</td>'
+                              +'<td class="label-cell">'+myres[i]['p_name']+'</td>'
+                              +'<td class="numeric-cell">'+qty+'</td></tr>';
+                    }
+                    output+='<tr><td class="checkbox-cell"></td>'
+                              +'<td class="numeric-cell font-600">TOTAL: </td>'
+                              +'<td class="numeric-cell font-600">'+ttl+'</td></tr>';
+                    output+='<tr><td class="checkbox-cell"></td>'
+                              +'<td class="numeric-cell font-600">TOTAL CRATES: </td>'
+                              +'<td class="numeric-cell font-600">'+ttl_Crt+'</td></tr>';
+                    output+='</tbody></table></div>';
+                    
+
+                  //  alert(output);
+                  $('.view_order_history_info').append(output);
+                
+              }
+            });
+        myApp.hidePreloader();
 });

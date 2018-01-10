@@ -1,4 +1,4 @@
-<div class="page" data-page='change_password'>
+<div class="page" data-page='order_history'>
                 
                 <div class="navbar">
                     <div class="navbar-inner">
@@ -7,10 +7,8 @@
                                 <i class="icon icon-back"></i>
                             </a>
                         </div>
-                        <div class="title">Change Password</div>
-                        <div class="right">
-                            
-                        </div>
+                        <div class="title">Order History </div>
+                        
                     </div>
                 </div>
 
@@ -20,9 +18,9 @@
                       <i class="fa fa-dashboard fa-lg"></i>
                       <span class="tabbar-label">DASHBOARD</span>
                     </a>
-                    <a href="profile.html" class="link tab-link-active">
-                      <i class="fa fa fa-user-o"></i>
-                      <span class="tabbar-label">PROFILE</span>
+                    <a href="place_order.html" class="link tab-link-active">
+                      <i class="fa fa-plus fa-lg"></i>
+                      <span class="tabbar-label">NEW ORDER</span>
                     </a>
                    
                     <a onclick="logout_fun()" class="link">
@@ -35,56 +33,59 @@
                 <div class="page-content">
 <!-- START CODE -->
 
-<br/>
-<div class="card">    
+<div class="content-block-title font-600 font-15">ORDER SEARCH:</div>
+<div class="card">
 <div class="card-content">
 <div class="card-content-inner">
-<div class="list-block">
-<form class="changepassForm">
+      
+      <form class="ohistoryForm">
          <div class= "list-block">
             <ul>
                <li class = "item-content">
                   <div class = "item-inner">
-                     <div class = "item-title label">Old Password</div>
+                     <div class = "item-title label">Select Year</div>
                      <div class = "item-input">
-                        <input type = "text" name = "old_password" placeholder = "Enter the username">
+                        <select name="oh_year" class="yearlist" required>
+                          <option value=""> Select Year </option>
+                        </select>
                      </div>
                   </div>
                </li>
                
                <li class = "item-content">
                   <div class = "item-inner">
-                     <div class = "item-title label">New Password</div>
+                     <div class = "item-title label">Select Month</div>
                      <div class = "item-input">
-                        <input type = "password" class="new_pass" name = "u_password" placeholder = "Enter the New password">
+                        <select name="oh_month" class="monthlist" required>
+                          <option value=""> Select Month</option>
+                        </select>
                      </div>
                   </div>
                </li>
-
-               <li class = "item-content">
-                  <div class = "item-inner">
-                     <div class = "item-title label">Confirm Password</div>
-                     <div class = "item-input">
-                        <input type = "password" class="conf_pass" name = "con_password" placeholder = "Enter the Confirm password">
-                     </div>
-                  </div>
-               </li>
-
-
             </ul>
          </div>
          
          <div class = "list-block">
             <ul>
-               <li class = "item-content"><div class = "item-inner"><div class = "item-input"><div class="button-connect"><a href = "#" class = "button button-fill  button-big" onclick="change_password();">Change Password</a></div></div></div></li>
+               <li class = "item-content"><div class = "item-inner"><div class = "item-input"><div class="button-connect"><a href = "#" class = "button button-fill  btn-olive" onclick="search_order_history();">Search</a></div></div></div></li>
             </ul>
          </div>
       </form>
-  
+   </div></div></div>
+<!-- end -->
+<div class="card oh_div" style="display:none"> 
+<div class = "card-header oh_header"></div>  
+<div class="card-content">
+<div class="card-content-inner">
+<div class="list-block">
+  <ul class="order_history_list">
+    
+  </ul>
 </div>
 </div>
 </div>
 </div>
+
 
 
                 </div>
