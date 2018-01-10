@@ -305,6 +305,7 @@ function change_password(){
 //============== PLACE ORDER ========
 myApp.onPageInit('place_order', function (page) {
     checkConnection();
+
     var si_username = window.localStorage.getItem("login_session");
     var base_url='http://starprojects.in/dairy/app/';
     var output='';
@@ -368,6 +369,7 @@ myApp.onPageInit('place_order', function (page) {
                     output +='<li class = "item-content"><div class = "item-inner"><div class = "item-input"><div class="button-connect"><a href = "#" class = "button button-fill  button-big btn-olive" onclick="add_order();">Place Order</a></div></div></div></li>';
                   //  alert(output);
                   $('.product_list').append(output);
+                  $(".p_qty").val('');
 
               }
             });
@@ -413,7 +415,7 @@ myApp.onPageInit('edit_order', function (page) {
                                 +'<div class="item-inner">'
                                +'<div class="item-title font-13">'+no+'. '+myres[i]['name']+'</div>'
                                 +'<div class="input">'
-                                +'<input type="text" style="border:1px solid gray;width:75px;" name="product1['+myres[i]['code']+']" value="'+qty+'" class="p_qty" onkeyup="calculateSum()" min="1" autocomplete="off">'
+                                +'<input type="number" style="border:1px solid gray;width:75px;" name="product1['+myres[i]['code']+']" value="'+qty+'" class="p_qty" onkeyup="calculateSum()" min="1" autocomplete="off">'
                                 +'</div>'
                                 +'</div>'
                                 +'</li>';
@@ -442,6 +444,7 @@ myApp.onPageInit('edit_order', function (page) {
                                 +'</li>';*/
                     output +='<li class = "item-content"><div class = "item-inner"><div class = "item-input"><div class="button-connect"><a href = "#" class = "button button-fill  button-big btn-olive" onclick="edit_order();">Save Changes</a></div></div></div></li>';
 
+                     $(".ttlcnt_edit").html(ttl+" | "+ttl_Crt);
                   //  alert(output);
                   $('.edit_product_list').append(output);
                 //calculateSum();
@@ -511,7 +514,7 @@ myApp.onPageInit('view_order', function (page) {
                               +'<td class="numeric-cell font-600">'+ttl_Crt+'</td></tr>';
                     output+='</tbody></table></div>';
                     
-                     $(".ttlcnt_edit").html(ttl+" | "+ttl_Crt+" ");
+
                   //  alert(output);
                   $('.view_order_info').append(output);
                 
@@ -533,7 +536,8 @@ function calculateSum() {
     //.toFixed() method will roundoff the final sum to 2 decimal places
     $(".total_order").html(sum.toFixed(2));
     $(".total_crates").html(Math.round(crates.toFixed(2)));
-    $(".ttlcnt").html(sum.toFixed(2)+" | "+Math.round(crates.toFixed(2))+" ");
+    $(".ttlcnt").html(sum.toFixed(2)+" | "+Math.round(crates.toFixed(2)));
+    $(".ttlcnt_edit").html(sum.toFixed(2)+" | "+Math.round(crates.toFixed(2)));
 }
 
 function add_order(){

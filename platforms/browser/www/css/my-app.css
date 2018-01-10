@@ -41,3 +41,22 @@
     margin-right: 0px !important;
     margin-left: 0px !important;
 }
+
+/*-------- dashboard -----*/
+.widget-bg-color-icon .bg-icon {
+    height: 80px;
+    width: 80px;
+    text-align: center;
+    border-radius: 50%;
+}
+.widget-bg-color-icon .bg-icon i {
+    font-size: 32px;
+    line-height: 80px;
+}
+.text-right {
+    text-align: right!important;
+}
+.right-ttl{
+    font-size: 14px !important;
+    margin-right: 5px;
+}
