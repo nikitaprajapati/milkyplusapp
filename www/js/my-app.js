@@ -699,7 +699,7 @@ function search_order_history(){
    // console.log(form);
     var output='';
     $('.order_history_list').html('');
-    $('.oh_div').show();
+    
     myApp.showPreloader();
           $$.ajax({
              type: 'POST',
@@ -708,6 +708,7 @@ function search_order_history(){
              data: form,
              cache: false,
              success: function(res) {
+                $('.oh_div').show();
                 var myres=res.order;
                 $('.oh_header').html("<strong> Search By : </strong> "+res.searchby+"<strong>Total Orders : </strong> "+myres.length+"");
                 //alert($('.monthlist: selected').val()); 
