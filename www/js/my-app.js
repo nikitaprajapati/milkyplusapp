@@ -9,6 +9,7 @@ var myApp = new Framework7({
     popover: {
     closeByBackdropClick: true,
   },
+
     // Hide and show indicator during ajax requests
     onAjaxStart: function (xhr) {
         myApp.showIndicator();
@@ -16,7 +17,9 @@ var myApp = new Framework7({
     onAjaxComplete: function (xhr) {
         myApp.hideIndicator();
     }
+
 });
+
 
 // Export selectors engine
 var $$ = Dom7;
@@ -31,7 +34,7 @@ var mainView = myApp.addView('.view-main', {
 $( document ).ready(function() {  
     document.addEventListener("deviceready", checkStorage, false); 
     document.addEventListener("backbutton", onBackKeyDown, false);
-     
+     friz_fun();
  });
  
 function onBackKeyDown() {
@@ -227,22 +230,29 @@ function checklogin(){
     myApp.showPreloader();
           $$.ajax({
              type: 'POST',
+             //dataType:'json',
              url  : base_url+'chklogin',
              data: form,
+            //contentType: "application/json",
              cache: false,
-             success: function(res) {
-                //alert(res);
-                 if(res!='')
+             success: function(res1) {
+               if(res1!='')
                  {
-                    // alert("success");
-                    window.localStorage.setItem("login_session", res);
+                    var res=$.parseJSON(res1);
+                    if(res.userData[0]['status']=="0"){
+                    window.localStorage.setItem("login_session", res.userData[0]['u_username']);
                     mainView.loadPage("dashboard.html");
+                    }else{
+                       myApp.addNotification({
+                            message: '<h4 class="font-600 color-white">Milky Plus</h4> Your account has been deactiveted.'
+                        });  
+                    }
                  }
                  else
                  {
                     
                      myApp.addNotification({
-                            message: 'Please Enter a Valid Data.'
+                            message: '<h4 class="font-600 color-white">Milky Plus</h4> Please Enter Valid Data.'
                         });
                  }
               }
@@ -262,7 +272,7 @@ function change_password(){
     var conf_pass=$('.conf_pass').val();
     if(new_pass != conf_pass){
       myApp.addNotification({
-                            message: 'Confirm password not match.'
+                            message: '<h4 class="font-600 color-white">Milky Plus</h4> Confirm password not match.'
                         });
 
     }else{
@@ -279,7 +289,7 @@ function change_password(){
                  {
                     
                      myApp.addNotification({
-                            message: '<strong>Success! </strong> Password has been changed.'
+                            message: '<h4 class="font-600 color-white">Milky Plus</h4> <strong>Success! </strong> Password has been changed.'
                         });
                     mainView.loadPage("profile.html");
                  }
@@ -287,14 +297,14 @@ function change_password(){
                  {
                     
                      myApp.addNotification({
-                            message: 'Old password is wrong. Please try again.'
+                            message: '<h4 class="font-600 color-white">Milky Plus</h4>  Old password is wrong. Please try again.'
                         });
                  }
                  else
                  {
                     
                      myApp.addNotification({
-                            message: 'Please Enter a Valid Data.'
+                            message: '<h4 class="font-600 color-white">Milky Plus</h4> Please Enter a Valid Data.'
                         });
                  }
               }
@@ -314,6 +324,8 @@ myApp.onPageInit('place_order', function (page) {
     //var tomorrow = new Date.today().addDays(1).toString("dd-mm-yyyy"); 
    // alert(tomorrow);
     $('.customer_code').val(si_username);
+    $(".total_crates").html("");
+    $(".total_order").html("");
     $$.ajax({
              //type: 'POST',
              url  : base_url+'product_list',
@@ -368,7 +380,7 @@ myApp.onPageInit('place_order', function (page) {
                                 +'</div>'
                                 +'</div>'
                                 +'</li>';*/
-                    output +='<li class = "item-content"><div class = "item-inner"><div class = "item-input"><div class="button-connect"><a href = "#" class = "button button-fill  button-big btn-olive" onclick="add_order();">Place Order</a></div></div></div></li>';
+                    output +='<li class = "item-content"><div class = "item-inner"><div class = "item-input"><div class="button-connect"><a href = "#" class = "button button-fill  button-big btn-olive" onclick="add_order();"><i class="fa fa-save fa-lg"></i> <span class="font-600 font-15">SAVE ORDER</span></a></div></div></div></li>';
                   //  alert(output);
                   $('.product_list').append(output);
                   $(".p_qty").val('');
@@ -389,8 +401,9 @@ myApp.onPageInit('edit_order', function (page) {
     //var tomorrow = new Date.today().addDays(1).toString("dd-mm-yyyy"); 
    // alert(tomorrow);
     $('.order_code_edit').html(order_code);
-    
-     $('.view_order_link').html('<a href="view_order.html?order_code='+order_code+'" class="link icon-only bacl"><i class="icon icon-back"></i></a>');
+    $(".total_crates").html("");
+    $(".total_order").html("");
+    $('.view_order_link').html('<a href="view_order.html?order_code='+order_code+'" class="link icon-only bacl"><i class="icon icon-back"></i></a>');
     $('.customer_code').val(si_username);
     $$.ajax({
              //type: 'POST',
@@ -444,7 +457,7 @@ myApp.onPageInit('edit_order', function (page) {
                                 +'</div>'
                                 +'</div>'
                                 +'</li>';*/
-                    output +='<li class = "item-content"><div class = "item-inner"><div class = "item-input"><div class="button-connect"><a href = "#" class = "button button-fill  button-big btn-olive" onclick="edit_order();">Save Changes</a></div></div></div></li>';
+                    output +='<li class = "item-content"><div class = "item-inner"><div class = "item-input"><div class="button-connect"><a href = "#" class = "button button-fill  button-big btn-olive" onclick="edit_order();"><i class="fa fa-save fa-lg"></i> <span class="font-600 font-15">SAVE CHANGES</span></a></div></div></div></li>';
 
                      $(".ttlcnt_edit").html(ttl+" | "+ttl_Crt);
                   //  alert(output);
@@ -455,7 +468,44 @@ myApp.onPageInit('edit_order', function (page) {
             });
 });
 
-//==========================================
+function delete_order(id){
+    checkConnection();
+    var base_url='http://starprojects.in/dairy/app/';
+   //var result=confirm("Are you sure you want to delete this order?");   
+    //if(result){
+    myApp.confirm('Are you sure you want to delete this order?', 'Milky Plus',
+    function () {
+    myApp.showPreloader();
+          $$.ajax({
+             type: 'PUT',
+             url  : base_url+'delete_order/'+id,
+             cache: false,
+             success: function(res) {
+               
+                if(res=='success')
+                 {
+                     
+                    mainView.loadPage("order_mgt.html");
+                  //  myApp.alert('Order has been deleted successfully.','Milky Plus');
+                    
+                    myApp.addNotification({
+                        message: '<h4 class="font-600 color-white">Milky Plus</h4> Order has been deleted successfully.'
+                    });
+                    
+                 }else{
+                    myApp.alert('Please try again.');
+                 }
+                 
+              }
+            });
+     myApp.hidePreloader();
+     },
+     function () {
+                  return false;
+               });
+
+    
+}
 //============== VIEW ORDER ========
 myApp.onPageInit('view_order', function (page) {
     checkConnection();
@@ -470,6 +520,8 @@ myApp.onPageInit('view_order', function (page) {
     //$('.customer_code').val(si_username);
     $('.order_code_view').html(order_code);
     $('.edit_order_link').html('<a href="edit_order.html?order_code='+order_code+'" class="link icon-only"><i class="fa fa-pencil-square-o"></i></a>');
+    $('.delete_order_link').html('<a onclick="delete_order('+"'"+order_code+"'"+')" class="link bg-red color-white btn-small font-400 pull-right "><i class="glyphicon glyphicon-trash"></i> DELETE</a>');
+    
     myApp.showPreloader();
     $$.ajax({
              //type: 'POST',
@@ -547,7 +599,10 @@ function add_order(){
     checkConnection();
     var form = $(".orderForm").serialize();
     var base_url='http://starprojects.in/dairy/app/';
-    //alert(form);
+    //alert($(".total_crates").html());
+    if($(".total_crates").html()==0 || $(".total_crates").html()==""){
+        myApp.alert('Please enter quantity.','Milky Plus');
+    }else{
     myApp.showPreloader();
           $$.ajax({
              type: 'POST',
@@ -558,16 +613,20 @@ function add_order(){
                 //alert(res);
                 if(res!='')
                  {
+                   
                     mainView.loadPage("order_mgt.html");
-                      myApp.addNotification({
-                            message: 'Place order successfully.'
-                        });
+                    //myApp.alert('Order has been placed successfully.','Milky Plus');
+                    myApp.addNotification({
+                        message: '<h4 class="font-600 color-white">Milky Plus</h4> Order has been placed successfully.'
+                    });
+
                     
                  }
                  
               }
             });
-     myApp.hidePreloader(); 
+     myApp.hidePreloader();
+    }
 }
 
 function edit_order(){
@@ -575,7 +634,10 @@ function edit_order(){
     var form = $(".orderEditForm").serialize();
     var base_url='http://starprojects.in/dairy/app/';
     //alert(form);
-    myApp.showPreloader();
+    if($(".total_crates").html()==0 || $(".total_crates").html()==""){
+        myApp.alert('Please enter quantity.','Milky Plus');
+    }else{
+     myApp.showPreloader();
           $$.ajax({
              type: 'POST',
              url  : base_url+'edit_order',
@@ -587,7 +649,7 @@ function edit_order(){
                  {
                     mainView.loadPage("order_mgt.html");
                     myApp.addNotification({
-                        message: 'Edit order successfully.'
+                        message: '<h4 class="font-600 color-white">Milky Plus</h4> Order has been updated successfully.'
                     });
                     
                  }
@@ -595,6 +657,8 @@ function edit_order(){
               }
             });
      myApp.hidePreloader(); 
+    }
+    
 }
 
 //============== ORDER MGT ========
@@ -639,8 +703,8 @@ myApp.onPageInit('order_mgt', function (page) {
                             +'</li>';*/
                       output  +='<li class=""><a href="view_order.html?order_code='+myres[i]['order_code']+'" class="item-content item-link">'
                             +'<div class="item-inner">'
-                            +'<div class="item-title">ORDER CODE #<strong>'+myres[i]['order_code']+'</strong></div>'
-                            +'<div class="item-after font-13">'+myres[i]['order_date1']+'</div></div></a>'
+                            +'<div class="item-title color-black">ORDER CODE #<strong>'+myres[i]['order_code']+'</strong></div>'
+                            +'<div class="item-after item-title font-13">'+myres[i]['order_date1']+'</div></div></a>'
                             +'<div class="accordion-item-content">'
                             +'<div class="content-block">'
                             +'<p>Total Crates: '+myres[i]['cnt']+'</p>'
@@ -718,7 +782,7 @@ function search_order_history(){
                 for(var i = 0; i < myres.length; i++){
                     output  +='<li class=""><a href="view_order_history.html?order_code='+myres[i]['order_code']+'" class="item-content item-link">'
                             +'<div class="item-inner">'
-                            +'<div class="item-title">ORDER CODE #<strong>'+myres[i]['order_code']+'</strong></div>'
+                            +'<div class="item-title color-black">ORDER CODE #<strong>'+myres[i]['order_code']+'</strong></div>'
                             +'<div class="item-after font-13">'+myres[i]['order_date1']+'</div></div></a>'
                             +'<div class="accordion-item-content">'
                             +'<div class="content-block">'
@@ -806,3 +870,43 @@ myApp.onPageInit('view_order_history', function (page) {
             });
         myApp.hidePreloader();
 });
+
+//--------- friz function -------------- 
+window.setInterval(function(){
+friz_fun();
+status_chk_fun();
+},1000);
+
+function friz_fun(){
+    var si_username = window.localStorage.getItem("login_session");
+    var base_url='http://starprojects.in/dairy/app/';
+    $.ajax({url: base_url+'chk_friz_time/'+si_username, success: function(result){
+        //alert(result);
+        if(result=="F"){
+        $('.friz_cover').show();
+        $('.friz_box input').attr('readonly','readonly');
+        $('.friz_msg').html('<span class="font-600 color-white">ORDER TIME IS OVER</span>');
+        $('.friz_msg').show();
+        }else{
+        $('.friz_box input').attr('readonly',false);
+        $('.friz_msg').html('');
+        $('.friz_msg').hide();
+        $('.friz_cover').hide();
+        }
+    }});
+    
+}
+
+function status_chk_fun(){
+    var si_username = window.localStorage.getItem("login_session");
+    var base_url='http://starprojects.in/dairy/app/';
+    $.ajax({url: base_url+'chk_status/'+si_username, success: function(result){
+        //alert(result);
+        if(result==1){
+            window.localStorage.removeItem("login_session"); 
+            mainView.loadPage("index.html");
+        }
+    }});
+    
+}
+//-----------------------------------------

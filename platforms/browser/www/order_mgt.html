@@ -15,6 +15,15 @@
                         </div>
                     </div>
                 </div>
+                <form data-search-list = ".list-block-search" data-search-in = ".item-title" 
+                     class = "searchbar searchbar-init">
+                     <div class = "searchbar-input">
+                        <input type = "search" placeholder = "Search"><a href = "#" 
+                           class = "searchbar-clear"></a>
+                     </div>
+                     <a href = "#" class = "searchbar-cancel">Cancel</a>
+                  </form>
+
 
                 <div class="toolbar toolbar-bottom">
                   <div class="toolbar-inner">
@@ -33,40 +42,30 @@
                     </a>
                   </div>
                 </div>
+                
+              <div class = "searchbar-overlay"></div>
+              <div class="page-content hide-toolbar-on-scroll">
+              <!-- START CODE -->
+              <div class="friz_msg text-center bg-red pd-2" style="display:none;"></div>
+              <div class="content-block-title font-15 font-600"><span class="total_order_counts"></span>
+              <a href="order_history.html" class="link pull-right btn-small bg-purple color-white font-400"><i class="fa fa-history"></i> History</a>
+              </div>
+              <div class="card">    
+              <div class="card-content">
+              <div class="card-content-inner">
+              <div class = "searchbar-not-found"><h4 class='font-600 text-center color-red'><p>No data available!</p></h4></div>
+                  
+              <div class="list-block  list-block-search searchbar-found">
+                <ul class="order_list">
+                  
+                </ul>
 
-                <div class="page-content">
-<!-- START CODE -->
+              </div>
+              </div>
+              </div>
+              </div>
+              <p class="text-center note_alt" style="display:none"><small >Note: Last 30 Orders View.</small></p>
 
-<div class="content-block-title font-15"><span class="total_order_counts"></span>
-<a href="order_history.html" class="link pull-right"><i class="fa fa-history fa-lg"></i> History</a>
-</div>
-<div class="card">    
-                <div class="card-content">
-                <div class="card-content-inner">
-<div class="list-block accordion-list">
-  <ul class="order_list">
-    
-  </ul>
-
-</div>
-</div>
-</div>
-</div>
-<p class="text-center note_alt" style="display:none"><small >Note: Last 30 Orders View.</small></p>
-<!--div class="data-table">
-<table>
-    <thead>
-      <tr>
-        <th class="label-cell">ORDER CODE</th>
-        <th class="numeric-cell">ORDER DATE</th>
-        <th class="numeric-cell">TTL. CRATES</th>
-      </tr>
-    </thead>
-    <tbody class="order_list">
-    </tbody>
-</table-->
-
-<!-- END CODE -->
 
 
                 </div>

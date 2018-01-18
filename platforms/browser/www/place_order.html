@@ -1,4 +1,6 @@
+ 
  <div class="page" data-page='place_order'>
+
                  <div class="navbar">
                     <div class="navbar-inner">
                         <div class="left">
@@ -14,8 +16,13 @@
                 </div>
 
                <div class="toolbar toolbar-bottom">
-                  <div class="toolbar-inner">
-                    <a href="dashboard.html" class="link tab-link-active">
+                  <div class="toolbar-inner center">
+                    
+                    <a onclick="add_order();" class="link place_order_btn">
+                      <i class="fa fa-save fa-lg"></i>
+                      <span class="tabbar-label font-600 font-15">SAVE ORDER</span>
+                    </a>
+                    <!--a href="dashboard.html" class="link tab-link-active">
                       <i class="fa fa-dashboard fa-lg"></i>
                       <span class="tabbar-label">DASHBOARD</span>
                     </a>
@@ -26,15 +33,26 @@
                     <a onclick="logout_fun()" class="link">
                       <i class="fa fa-sign-out fa-lg"></i>
                       <span class="tabbar-label">LOGOUT</span>
-                    </a>
+                    </a-->
                   </div>
                 </div>
-
+                <!-- FIIZ DIV -->
+                <div class = "friz_cover" style="display:none;">
+                  <div class="cover-data"><i class="fa fa-warning fa-5x color-yellow"></i> <br/><h3 class="color-red">ORDER TIME IS OVER</h3>
+                    <br/>
+                   <div class="row">
+                    <div class="col"></div>
+                    <div class="col"><a href="dashboard.html" class="button bg-blue  button-raised color-white back"><i class="icon icon-back"></i> Dashboard</a></div>
+                    <div class="col"></div>
+                  </div> 
+                  </div>
+                </div> 
+                <!-- /.FIIZ DIV -->
                 <div class="page-content">
 
 <br/>
                 <!-- START CODE -->
-                <div class="card">
+                <div class="card friz_box">
                 <div class="card-content">
                 <div class="card-header bg-light-card font-600 color-white">
                     <span class="order_date_add"></span>
