@@ -14,7 +14,7 @@
         Milky Plus
     </author>
     <content src="index.html" />
-    <gap:plugin name="net.bgta.phonegap.plugins.appversion" version="1.0.0" />
+    <icon src="icon.png" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />

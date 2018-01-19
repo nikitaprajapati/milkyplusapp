@@ -66,7 +66,16 @@ function checkStorage()
 { 
    checkConnection();
    //alert("in sabzi func");
-   var value = window.localStorage.getItem("login_session");
+    var value = window.localStorage.getItem("login_session");
+    var version=1;
+    var base_url='http://starprojects.in/dairy/app/';
+    $.ajax({url: base_url+'chk_version/'+version, success: function(result){
+        if(result==0){
+            myApp.confirm('A new update is available for the Milky Plus. Please update your app.', function () {
+                  navigator.app.clearHistory(); navigator.app.exitApp();
+            });
+        }
+    }});
    if(value==null) 
    {
      mainView.loadPage("index.html");
@@ -186,7 +195,7 @@ myApp.onPageInit('profile', function (page) {
                // console.log(myres);
 
                 $('.name').html(myres[0]['name']);
-                $('.code').html(myres[0]['code']);
+                $('.code').html(" CODE : "+myres[0]['code']);
                 $('.city').html(myres[0]['c_city']);
                 $('.area').html(myres[0]['c_area_code']);
                 $('.mobile_no').html(myres[0]['c_mob']);
@@ -257,7 +266,7 @@ function checklogin(){
                  }
               }
             });
-     myApp.hidePreloader();
+     myApp.hidePreloader(); 
 
 }
 
@@ -326,6 +335,7 @@ myApp.onPageInit('place_order', function (page) {
     $('.customer_code').val(si_username);
     $(".total_crates").html("");
     $(".total_order").html("");
+     myApp.showPreloader();
     $$.ajax({
              //type: 'POST',
              url  : base_url+'product_list',
@@ -382,11 +392,13 @@ myApp.onPageInit('place_order', function (page) {
                                 +'</li>';*/
                     output +='<li class = "item-content"><div class = "item-inner"><div class = "item-input"><div class="button-connect"><a href = "#" class = "button button-fill  button-big btn-olive" onclick="add_order();"><i class="fa fa-save fa-lg"></i> <span class="font-600 font-15">SAVE ORDER</span></a></div></div></div></li>';
                   //  alert(output);
-                  $('.product_list').append(output);
+                  $('.product_list').html(output);
+                  $('.pg_loads').html("");
                   $(".p_qty").val('');
 
               }
             });
+myApp.hidePreloader();
 });
 
 //=========== Edit order ================
@@ -461,7 +473,8 @@ myApp.onPageInit('edit_order', function (page) {
 
                      $(".ttlcnt_edit").html(ttl+" | "+ttl_Crt);
                   //  alert(output);
-                  $('.edit_product_list').append(output);
+                  $('.edit_product_list').html(output);
+                  $('.pg_loads').html("");
                 //calculateSum();
 
               }
@@ -519,26 +532,26 @@ myApp.onPageInit('view_order', function (page) {
 
     //$('.customer_code').val(si_username);
     $('.order_code_view').html(order_code);
-    $('.edit_order_link').html('<a href="edit_order.html?order_code='+order_code+'" class="link icon-only"><i class="fa fa-pencil-square-o"></i></a>');
-    $('.delete_order_link').html('<a onclick="delete_order('+"'"+order_code+"'"+')" class="link bg-red color-white btn-small font-400 pull-right "><i class="glyphicon glyphicon-trash"></i> DELETE</a>');
-    
+   
     myApp.showPreloader();
     $$.ajax({
              //type: 'POST',
              url  : base_url+'view_order/'+order_code,
              dataType:'json',
              success: function(myres) {
-                   
-                   
-
+                if(myres[0]['btn_acc']==='A'){
+                $('.edit_order_link').html('<a href="edit_order.html?order_code='+order_code+'" class="link icon-only"><i class="fa fa-pencil-square-o"></i></a>');
+                $('.delete_order_link').html('<a onclick="delete_order('+"'"+order_code+"'"+')" class="link bg-red color-white btn-small font-400 pull-right "><i class="glyphicon glyphicon-trash"></i> DELETE</a>');
+                }
+  
                   output+='<div class="data-table data-table-init card">'
                             +'<div class="card-header bg-light-card font-600 color-white"><div class="data-table-title font-15">ORDER DATE: '+myres[0]['order_date1']+'<br/>CREATE ON: '+myres[0]['order_place_date1']+'</div></div>'
                             +'<table>'
                               +'<thead>'
                                 +'<tr>'
-                                  +'<th class="checkbox-cell font-600">No.</th>'
-                                  +'<th class="label-cell font-600">PRODUCT NAME</th>'
-                                 +' <th class="numeric-cell font-600">QTY</th>'
+                                  +'<th class="checkbox-cell font-600 font-14">No.</th>'
+                                  +'<th class="label-cell font-600 font-14">PRODUCT NAME</th>'
+                                 +' <th class="numeric-cell font-600 font-14">QTY</th>'
                                +' </tr>'
                               +'</thead>'
                               +'<tbody>';
@@ -722,8 +735,10 @@ myApp.onPageInit('order_mgt', function (page) {
                               +'<td class="numeric-cell">'+myres[i]['cnt']+'</td>'
                               +'</a></tr>';*/
                 }
-                    
+                if(output!=""){    
                 $('.order_list').html(output);
+                $('.pg_load').html("");  
+                }
                 $('.note_alt').show();
                 }
 
@@ -830,9 +845,9 @@ myApp.onPageInit('view_order_history', function (page) {
                             +'<table>'
                               +'<thead>'
                                 +'<tr>'
-                                  +'<th class="checkbox-cell font-600">No.</th>'
-                                  +'<th class="label-cell font-600">PRODUCT NAME</th>'
-                                 +' <th class="numeric-cell font-600">QTY</th>'
+                                  +'<th class="checkbox-cell font-600 font-14">No.</th>'
+                                  +'<th class="label-cell font-600 font-14">PRODUCT NAME</th>'
+                                 +' <th class="numeric-cell font-600 font-14">QTY</th>'
                                +' </tr>'
                               +'</thead>'
                               +'<tbody>';
@@ -887,11 +902,15 @@ function friz_fun(){
         $('.friz_box input').attr('readonly','readonly');
         $('.friz_msg').html('<span class="font-600 color-white">ORDER TIME IS OVER</span>');
         $('.friz_msg').show();
+        $('.delete_order_link').hide();
+        $('.edit_order_link').hide();
         }else{
         $('.friz_box input').attr('readonly',false);
         $('.friz_msg').html('');
         $('.friz_msg').hide();
         $('.friz_cover').hide();
+        $('.delete_order_link').show();
+        $('.edit_order_link').show();
         }
     }});
     
