@@ -68,7 +68,7 @@ function checkStorage()
    //alert("in sabzi func");
     var value = window.localStorage.getItem("login_session");
     var version=1;
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     $.ajax({url: base_url+'chk_version/'+version, success: function(result){
         if(result==0){
             myApp.confirm('A new update is available for the Milky Plus. Please update your app.', function () {
@@ -159,9 +159,14 @@ $$(document).on('pageInit', function (e){
 });
 
 myApp.onPageInit('dashboard', function (page) {
-    checkConnection();
+    var networkState = navigator.connection.type;
+    //alert(networkState);
+    if(networkState=='none')
+    {  
+        mainView.loadPage("internet.html");
+    }        
   var si_username = window.localStorage.getItem("login_session");
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     var output='';
    
   //alert("incccccccc");
@@ -182,7 +187,7 @@ myApp.onPageInit('dashboard', function (page) {
 
 myApp.onPageInit('profile', function (page) {
   var si_username = window.localStorage.getItem("login_session");
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     var output='';
    
   //alert("incccccccc");
@@ -232,7 +237,7 @@ function logout_fun()
 function checklogin(){
     checkConnection();
     var form = $(".loginForm").serialize();
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     //alert(form);
 
     
@@ -274,7 +279,7 @@ function checklogin(){
 function change_password(){
     checkConnection();
     var form = $(".changepassForm").serialize();
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     var si_username = window.localStorage.getItem("login_session");
     //alert(form);
     var new_pass=$('.new_pass').val();
@@ -328,7 +333,7 @@ myApp.onPageInit('place_order', function (page) {
     checkConnection();
 
     var si_username = window.localStorage.getItem("login_session");
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     var output='';
     //var tomorrow = new Date.today().addDays(1).toString("dd-mm-yyyy"); 
    // alert(tomorrow);
@@ -406,7 +411,7 @@ myApp.hidePreloader();
 myApp.onPageInit('edit_order', function (page) {
     checkConnection();
     var si_username = window.localStorage.getItem("login_session");
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     var order_code=page.query.order_code;
     var output='';
     //alert(order_code);
@@ -483,7 +488,7 @@ myApp.onPageInit('edit_order', function (page) {
 
 function delete_order(id){
     checkConnection();
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
    //var result=confirm("Are you sure you want to delete this order?");   
     //if(result){
     myApp.confirm('Are you sure you want to delete this order?', 'Milky Plus',
@@ -523,7 +528,7 @@ function delete_order(id){
 myApp.onPageInit('view_order', function (page) {
     checkConnection();
     var si_username = window.localStorage.getItem("login_session");
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     var order_code=page.query.order_code;
     var output='';
     //alert(order_code);
@@ -611,7 +616,7 @@ function calculateSum() {
 function add_order(){
     checkConnection();
     var form = $(".orderForm").serialize();
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     //alert($(".total_crates").html());
     if($(".total_crates").html()==0 || $(".total_crates").html()==""){
         myApp.alert('Please enter quantity.','Milky Plus');
@@ -645,7 +650,7 @@ function add_order(){
 function edit_order(){
     checkConnection();
     var form = $(".orderEditForm").serialize();
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     //alert(form);
     if($(".total_crates").html()==0 || $(".total_crates").html()==""){
         myApp.alert('Please enter quantity.','Milky Plus');
@@ -678,7 +683,7 @@ function edit_order(){
 myApp.onPageInit('order_mgt', function (page) {
     checkConnection();
     var si_username = window.localStorage.getItem("login_session");
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     var output='';
     //var tomorrow = new Date.today().addDays(1).toString("dd-mm-yyyy"); 
    // alert(tomorrow);
@@ -750,7 +755,7 @@ myApp.hidePreloader();
 myApp.onPageInit('order_history', function (page) {
     checkConnection();
   var si_username = window.localStorage.getItem("login_session");
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     
    
   //alert("incccccccc");
@@ -774,7 +779,7 @@ function search_order_history(){
     checkConnection();
     var form = $(".ohistoryForm").serialize();
      var si_username = window.localStorage.getItem("login_session");
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
    // console.log(form);
     var output='';
     $('.order_history_list').html('');
@@ -821,7 +826,7 @@ function search_order_history(){
 myApp.onPageInit('view_order_history', function (page) {
     checkConnection();
     var si_username = window.localStorage.getItem("login_session");
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     var order_code=page.query.order_code;
     var output='';
     //alert(order_code);
@@ -894,7 +899,7 @@ status_chk_fun();
 
 function friz_fun(){
     var si_username = window.localStorage.getItem("login_session");
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     $.ajax({url: base_url+'chk_friz_time/'+si_username, success: function(result){
         //alert(result);
         if(result=="F"){
@@ -918,7 +923,7 @@ function friz_fun(){
 
 function status_chk_fun(){
     var si_username = window.localStorage.getItem("login_session");
-    var base_url='http://starprojects.in/dairy/app/';
+    var base_url='http://milkyplus.co.in/app/';
     $.ajax({url: base_url+'chk_status/'+si_username, success: function(result){
         //alert(result);
         if(result==1){
