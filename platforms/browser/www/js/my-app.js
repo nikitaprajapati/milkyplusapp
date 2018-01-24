@@ -702,6 +702,7 @@ myApp.onPageInit('order_mgt', function (page) {
                 $('.total_order_counts').html("TOTAL ORDERS : "+myres.length);
                 if(myres.length==0){
                     $('.order_list').html("<h4 class='font-600 text-center color-red'><p>No data available!</p></h4>");
+                    $('.pg_load').html("");
                 }else{
                 for(var i = 0; i < myres.length; i++){
                     /*output  +='<li class="accordion-item"><a href="#" class="item-content item-link">'
